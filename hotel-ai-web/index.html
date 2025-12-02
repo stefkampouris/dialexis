@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Hotel Messaria Reception</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0f9ff',
+                            100: '#e0f2fe',
+                            500: '#0ea5e9',
+                            600: '#0284c7',
+                            900: '#0c4a6e',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                        }
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wave': 'wave 1.5s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        wave: {
+                            '0%, 100%': { transform: 'scaleY(0.5)' },
+                            '50%': { transform: 'scaleY(1.0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-image: url('https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+        .glass {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .glass-dark {
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col items-center justify-between text-white">
+
+    <!-- Header -->
+    <header class="w-full p-6 flex justify-between items-center z-10">
+        <div class="flex items-center gap-2">
+            <div class="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                </svg>
+            </div>
+            <span class="font-semibold text-lg tracking-wide">HOTEL MESSARIA</span>
+        </div>
+        <div class="text-xs font-light bg-white/10 px-3 py-1 rounded-full uppercase tracking-wider">
+            Kythnos, Greece
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center w-full max-w-md px-6 z-10 relative">
+        
+        <!-- Status Indicator -->
+        <div id="status-container" class="mb-8 transition-all duration-500 opacity-0 transform translate-y-4 flex flex-col items-center gap-3">
+            <div class="flex items-center gap-2 bg-black/40 px-4 py-2 rounded-full border border-white/10 backdrop-blur-md">
+                <div id="status-dot" class="w-2 h-2 rounded-full bg-gray-400 transition-colors duration-500"></div>
+                <span id="status-text" class="text-sm font-medium text-gray-200 transition-opacity duration-300">Ready to connect</span>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div id="progress-container" class="w-32 h-1 bg-white/10 rounded-full overflow-hidden transition-opacity duration-300 opacity-0">
+                <div id="progress-bar" class="h-full bg-brand-500 w-0 transition-all duration-300 ease-out"></div>
+            </div>
+        </div>
+
+        <!-- Audio Visualizer (Hidden by default) -->
+        <div id="visualizer" class="hidden h-16 flex items-center justify-center gap-1 mb-8">
+            <div class="w-1.5 h-8 bg-white/80 rounded-full animate-[wave_1s_ease-in-out_infinite]"></div>
+            <div class="w-1.5 h-12 bg-white/80 rounded-full animate-[wave_1.2s_ease-in-out_infinite_0.1s]"></div>
+            <div class="w-1.5 h-6 bg-white/80 rounded-full animate-[wave_0.8s_ease-in-out_infinite_0.2s]"></div>
+            <div class="w-1.5 h-10 bg-white/80 rounded-full animate-[wave_1.1s_ease-in-out_infinite_0.3s]"></div>
+            <div class="w-1.5 h-7 bg-white/80 rounded-full animate-[wave_0.9s_ease-in-out_infinite_0.4s]"></div>
+        </div>
+
+        <!-- Call Button -->
+        <button id="call-btn" class="group relative w-24 h-24 rounded-full bg-white flex items-center justify-center shadow-[0_0_40px_rgba(255,255,255,0.3)] transition-all duration-300 hover:scale-110 active:scale-95">
+            <div class="absolute inset-0 rounded-full bg-white opacity-20 animate-ping group-hover:opacity-40"></div>
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 text-brand-900 transition-colors group-hover:text-brand-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+            </svg>
+        </button>
+
+        <p id="instruction-text" class="mt-8 text-center text-white/80 font-light text-lg">
+            Tap to speak with reception
+        </p>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="w-full p-6 z-10">
+        <div class="glass-dark rounded-2xl p-4">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h3 class="text-sm font-medium text-white">Reception Desk</h3>
+                    <p class="text-xs text-gray-400">24/7 AI Assistance</p>
+                </div>
+                <div class="flex gap-2">
+                    <span class="text-xs bg-white/10 px-2 py-1 rounded text-gray-300">EN</span>
+                    <span class="text-xs bg-white/10 px-2 py-1 rounded text-gray-300">EL</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Background Overlay -->
+    <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/80 z-0"></div>
+
+    <!-- Audio Elements -->
+    <audio id="remote-audio" autoplay playsinline></audio>
+
+    <script src="client.js"></script>
+</body>
+</html>
